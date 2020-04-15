@@ -14,22 +14,15 @@ public class WhenCreatingANewDog {
 
         Dog fido = Dog.called("Fido")
                 .ofBreed("Poodle")
+                .ofColour("black")
+                .withFavouriteFood("pizza")
                 .bornOn(birthday);
 
         Assert.assertEquals("Fido", fido.getName());
         Assert.assertEquals("Poodle", fido.getBreed());
         Assert.assertEquals(birthday, fido.getDateOfBirthday());
-    }
-
-    @Test
-    public void it_should_have_an_optional_favourite_food() throws Exception {
-
-        LocalDate birthday = LocalDate.now();
-
-        Dog fido = new Dog("Fido","Poodle",birthday, "pizza");
-
         Assert.assertEquals("pizza", fido.getFavouriteFood());
-
+        Assert.assertEquals("black", fido.getColour());
     }
 
 }

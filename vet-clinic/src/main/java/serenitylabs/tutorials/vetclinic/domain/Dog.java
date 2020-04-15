@@ -7,21 +7,21 @@ public class Dog {
     private final String name;
     private final String breed;
     private final LocalDate dateOfBirthday;
-
     private final String favouriteFood;
+    private final String colour;
 
 
-    public Dog(String name, String breed, LocalDate dateOfBirthday) {
-
-        this(name,breed,dateOfBirthday,null);
-    }
-
-    public Dog(String name, String breed, LocalDate dateOfBirthday,String favouriteFood) {
+    private Dog(String name, String breed, LocalDate dateOfBirthday, String favouriteFood, String colour) {
 
         this.name = name;
         this.breed = breed;
         this.dateOfBirthday = dateOfBirthday;
         this.favouriteFood = favouriteFood;
+        this.colour = colour;
+    }
+
+    public static OfBreed called(String name) {
+        return new DogBuilder(name);
     }
 
     public String getName() {
@@ -40,14 +40,24 @@ public class Dog {
         return favouriteFood;
     }
 
-    public static DogBuilder called(String name) {
-        return new DogBuilder(name);
+    public String getColour() {
+        return colour;
     }
 
-    public static class DogBuilder {
+    interface OfBreed {
+        OfColour ofBreed(String breed);
+    }
+
+    interface OfColour {
+        DogBuilder ofColour(String colour);
+    }
+
+    public static class DogBuilder implements OfBreed, OfColour {
 
         private String name;
         private String breed;
+        private String favouriteFood;
+        private String colour;
 
         public DogBuilder(String name) {
             this.name = name;
@@ -59,8 +69,17 @@ public class Dog {
         }
 
         public Dog bornOn(LocalDate birthday) {
-            return new Dog(name, breed, birthday);
+            return new Dog(name, breed, birthday, favouriteFood, colour);
         }
 
+        public DogBuilder withFavouriteFood(String favouriteFood) {
+            this.favouriteFood = favouriteFood;
+            return this;
+        }
+
+        public DogBuilder ofColour(String colour) {
+            this.colour = colour;
+            return this;
+        }
     }
 }
