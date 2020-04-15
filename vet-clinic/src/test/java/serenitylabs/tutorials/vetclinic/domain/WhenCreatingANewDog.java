@@ -2,7 +2,7 @@ package serenitylabs.tutorials.vetclinic.domain;
 
 import org.junit.Assert;
 import org.junit.Test;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 
 public class WhenCreatingANewDog {
@@ -10,9 +10,11 @@ public class WhenCreatingANewDog {
     @Test
     public void it_should_have_a_name() throws Exception {
 
-        LocalDateTime birthday = LocalDateTime.now();
+        LocalDate birthday = LocalDate.now();
 
-        Dog fido = new Dog("Fido","Poodle",birthday);
+        Dog fido = Dog.called("Fido")
+                .ofBreed("Poodle")
+                .bornOn(birthday);
 
         Assert.assertEquals("Fido", fido.getName());
         Assert.assertEquals("Poodle", fido.getBreed());
@@ -22,7 +24,7 @@ public class WhenCreatingANewDog {
     @Test
     public void it_should_have_an_optional_favourite_food() throws Exception {
 
-        LocalDateTime birthday = LocalDateTime.now();
+        LocalDate birthday = LocalDate.now();
 
         Dog fido = new Dog("Fido","Poodle",birthday, "pizza");
 
