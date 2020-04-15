@@ -4,21 +4,27 @@ import java.time.LocalDateTime;
 
 public class Dog {
 
-    private String name;
-    private String breed;
+    private final String name;
+    private final String breed;
+    private final LocalDateTime dateOfBirthday;
 
-    private LocalDateTime dateOfBirthday;
+    private final String favouriteFood;
 
-    public void setName(String name) {
+    public Dog(String name, String breed, LocalDateTime dateOfBirthday) {
+
+        this(name,breed,dateOfBirthday,null);
+    }
+
+    public Dog(String name, String breed, LocalDateTime dateOfBirthday,String favouriteFood) {
+
         this.name = name;
+        this.breed = breed;
+        this.dateOfBirthday = dateOfBirthday;
+        this.favouriteFood = favouriteFood;
     }
 
     public String getName() {
         return name;
-    }
-
-    public void setBreed(String breed) {
-        this.breed = breed;
     }
 
     public String getBreed() {
@@ -29,7 +35,7 @@ public class Dog {
         return dateOfBirthday;
     }
 
-    public void setDateOfBirthday(LocalDateTime dateOfBirthday) {
-        this.dateOfBirthday = dateOfBirthday;
+    public String getFavouriteFood() {
+        return favouriteFood;
     }
 }
