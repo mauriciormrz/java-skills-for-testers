@@ -1,6 +1,7 @@
 package serenitylabs.tutorials.vetclinic.sales.model;
 
-public interface TaxRateCalculator {
+import java.util.function.Function;
 
-    TaxRate rateFor(LineItem item);
+public interface TaxRateCalculator extends Function<LineItem, TaxRate> {
+
 }

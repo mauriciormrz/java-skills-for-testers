@@ -4,18 +4,30 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static serenitylabs.tutorials.vetclinic.sales.model.ProductCategory.*;
-import static serenitylabs.tutorials.vetclinic.sales.model.ProductCategory.Medicine;
 
 public class SalesTaxService {
+
+    static TaxRateCalculator STANDARD_RATE
+            = (item) -> new TaxRate(0.23, "Standard");
+
+    static TaxRateCalculator ZERO_RATE
+            = (item) -> new TaxRate(0.0, "Zero");
+
+    static TaxRateCalculator REDUCE_RATE
+            = (item) -> {
+        double rate = (item.getTotal() > 100.0) ? 0.135 : 0.09;
+        return new TaxRate(rate, "Reduced");
+    };
+
 
     private static Map<ProductCategory, TaxRateCalculator> CALCULATOR_PER_PRODUCT =
             new HashMap<>();
 
     static {
-        CALCULATOR_PER_PRODUCT.put(Snacks, new ReducedRateCalculator());
-        CALCULATOR_PER_PRODUCT.put(SoftDrinks, new ReducedRateCalculator());
-        CALCULATOR_PER_PRODUCT.put(Books, new ZeroRateCalculator());
-        CALCULATOR_PER_PRODUCT.put(Medicine, new ZeroRateCalculator());
+        CALCULATOR_PER_PRODUCT.put(Snacks, REDUCE_RATE);
+        CALCULATOR_PER_PRODUCT.put(SoftDrinks, REDUCE_RATE);
+        CALCULATOR_PER_PRODUCT.put(Books, ZERO_RATE);
+        CALCULATOR_PER_PRODUCT.put(Medicine, ZERO_RATE);
     }
 
     public SalesTax salesTaxEntryFor(LineItem item) {
@@ -30,7 +42,7 @@ public class SalesTaxService {
     private TaxRate taxRateFor(LineItem item) {
 
         return CALCULATOR_PER_PRODUCT
-                .getOrDefault(item.getCategory() , new StandardRateCalculator())
-                .rateFor(item);
+                .getOrDefault(item.getCategory(), STANDARD_RATE)
+                .apply(item);
     }
 }
